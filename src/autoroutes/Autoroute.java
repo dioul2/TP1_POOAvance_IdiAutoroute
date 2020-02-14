@@ -14,16 +14,15 @@ public class Autoroute{
 
     private ArrayList<Voiture> listVoitureDelAutoroute=new ArrayList<>();
 
-    public Autoroute(IdiAutoroute idiAutoroute, Integer idAutoroute, Double rayon, Double indiceDeFrottement,
+    public Autoroute( Integer idAutoroute, Double rayon, Double indiceDeFrottement,
                      Integer nombreVoie) {
-
-        this.idAutoroute = idAutoroute;
+        this.idAutoroute=idAutoroute;
         this.rayon = rayon;
         this.indiceDeFrottement = indiceDeFrottement;
         this.nombreVoie=nombreVoie;
         distributionVoiesSurAutoroute(this);
         this.listVoieDelAutoroute=getListVoieDelAutoroute();
-        idiAutoroute.addAutorouteSurIdiAutoroute(this);
+        //idiAutoroute.addAutorouteSurIdiAutoroute(this);
 
 
 
@@ -90,5 +89,11 @@ public class Autoroute{
 
     public void adVoieSurAutoroute(Voie voie){
         listVoieDelAutoroute.add(voie);
+    }
+
+    public void getInfosAutoroutes(){
+        //System.out.println("                AUTOROUTE: "+this.getIdAutoroute()+"\n");
+        getListVoitureDelAutoroute().forEach((v)->v.infosVoitures());
+
     }
 }
