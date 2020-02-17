@@ -1,31 +1,25 @@
 package autoroutes;
 
-import idiautoroute.IdiAutoroute;
 import voitures.Voiture;
-
 import java.util.ArrayList;
 
 public class Autoroute{
+
     private Integer idAutoroute;
     private  Double rayon;
     private Double indiceDeFrottement;
     private Integer nombreVoie;
-    private ArrayList<Voie> listVoieDelAutoroute=new ArrayList<>();
+    private ArrayList<Voie> listVoieDelAutoroute=new ArrayList<Voie>();
+    private ArrayList<Voiture> listVoitureDelAutoroute=new ArrayList<Voiture>();
 
-    private ArrayList<Voiture> listVoitureDelAutoroute=new ArrayList<>();
+    public Autoroute( Integer idAutoroute, Double rayon, Double indiceDeFrottement, Integer nombreVoie) {
 
-    public Autoroute( Integer idAutoroute, Double rayon, Double indiceDeFrottement,
-                     Integer nombreVoie) {
         this.idAutoroute=idAutoroute;
         this.rayon = rayon;
         this.indiceDeFrottement = indiceDeFrottement;
         this.nombreVoie=nombreVoie;
         distributionVoiesSurAutoroute(this);
         this.listVoieDelAutoroute=getListVoieDelAutoroute();
-        //idiAutoroute.addAutorouteSurIdiAutoroute(this);
-
-
-
     }
 
     public void distributionVoiesSurAutoroute(Autoroute autoroute){
@@ -34,6 +28,7 @@ public class Autoroute{
             autoroute.listVoieDelAutoroute.add(voie);
         }
     }
+
 
     public Integer getIdAutoroute() {
         return idAutoroute;
@@ -62,6 +57,10 @@ public class Autoroute{
 
     public void setNombreVoie(Integer nombreVoie) {
         this.nombreVoie = nombreVoie;
+    }
+
+    public Double getCirconferenceAutoroute(){
+        return 2*Math.PI*this.rayon;
     }
 
     public Double getDistanceEntreVoie(){
@@ -96,4 +95,6 @@ public class Autoroute{
         getListVoitureDelAutoroute().forEach((v)->v.infosVoitures());
 
     }
+
+
 }

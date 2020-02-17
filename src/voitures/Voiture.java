@@ -1,36 +1,46 @@
 package voitures;
 
 import autoroutes.Autoroute;
-import autoroutes.Voie;
-import idiautoroute.IdiAutoroute;
-
-import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 public class Voiture {
+
     private Integer idVoiture;
     private Double vitesse;
     private Integer reservoir;
     private Integer consommation;
     private String idVoiedEntree;
-    private Double distanceParcourueSurCetteAutoroute;
-    private Boolean toujoursSurMemeAutoroute=true;
+    private Double positionVoiture=0.0;
+    private Double positionVoieEntree;
     private Autoroute autoroute=null;
+    private Integer numVoieEntreeAutoroute;
+    private DecimalFormat dfVoiture=new DecimalFormat("0.00");
 
-   public Voiture(Integer idVoiture, Double vitesse, Integer reservoir, Integer consommation, Autoroute autoroute, Integer numVoieAutoroute ){
+   public Voiture(Integer idVoiture, Double vitesse, Integer reservoir, Integer consommation, Autoroute autoroute, Integer numVoieEntreeAutoroute ){
            this.idVoiture=idVoiture;
            this.vitesse=vitesse;
            this.reservoir=reservoir;
            this.consommation=consommation;
+           this.numVoieEntreeAutoroute=numVoieEntreeAutoroute;
+           this.positionVoiture+=autoroute.getListVoieDelAutoroute().get(this.numVoieEntreeAutoroute-1).getPositionVoie();
+           this.positionVoieEntree=autoroute.getListVoieDelAutoroute().get(this.numVoieEntreeAutoroute-1).getPositionVoie();
            this.autoroute=autoroute;
            autoroute.addVoitureSurAutoroute(this);
-           this.idVoiedEntree=autoroute.getListVoieDelAutoroute().get(numVoieAutoroute-1).getIdVoie();
-           this.distanceParcourueSurCetteAutoroute=autoroute.getListVoieDelAutoroute().get(numVoieAutoroute-1).getPositionVoie();
+           this.idVoiedEntree=autoroute.getListVoieDelAutoroute().get(this.numVoieEntreeAutoroute-1).getIdVoie();
     }
+
     public String getIdVoiedEntree(){
        return this.idVoiedEntree;
     }
-    public Double getDistanceParcourueSurUneAutoroute(){
-        return this.distanceParcourueSurCetteAutoroute;
+
+    public Double getPositionVoieEntree(){
+       return this.positionVoieEntree;
+    }
+
+
+
+    public void setNumVoieEntreeAutoroute(Integer numVoie){
+       this.numVoieEntreeAutoroute=numVoie;
     }
 
 
@@ -43,7 +53,26 @@ public class Voiture {
         return vitesse;
     }
 
-    private void setVitesse(Double indiceDefrottement){
+    public Double getPositionVoiture() {
+        return positionVoiture;
+    }
+
+    public void arreterVoiturePourCarburant(){
+       this.reservoir=0;
+       this.vitesse=0.0;
+    }
+
+    public void arreterVoiturePourAccident(){
+        this.vitesse=0.0;
+    }
+    public void setPositionVoiture(){
+        this.positionVoiture+=this.getVitesse();
+    }
+
+    public void setPositionVoiture(Double positionVoieEntree){
+       this.positionVoiture=positionVoieEntree;
+    }
+    public void setVitesse(Double indiceDefrottement){
        this.vitesse=this.vitesse*indiceDefrottement;
     }
 
@@ -54,7 +83,7 @@ public class Voiture {
     }
 
     public void setReservoir() {
-        this.reservoir -=this.getConsommation();
+        this.reservoir =this.reservoir-this.getConsommation();
     }
 
     private void setAutoroute(Autoroute autoroute){
@@ -66,11 +95,15 @@ public class Voiture {
     }
 
 
-    public void changerAutorouteVersCentre(Autoroute autoroute1, Autoroute autoroute2){
-       //Condition d'accès à faire
-        this.setVitesse(autoroute2.getIndiceDeFrottement());
-        autoroute2.addVoitureSurAutoroute(this);
-        autoroute1.supVoitureSurAutoroute(this);
+
+
+
+    public Boolean doitChangerAutoroute(Voiture voiture){
+
+        if((this.positionVoiture >=voiture.positionVoiture) && this.positionVoiture+this.getVitesse()<=voiture.positionVoiture+voiture.getVitesse()){
+            return true;
+        }
+        return false;
     }
 
     public void infosVoitures(){
@@ -78,25 +111,7 @@ public class Voiture {
         System.out.println("                          VOIE D'ACCES: "+this.getIdVoiedEntree());
         System.out.println("                               VITESSE: "+this.getVitesse());
         System.out.println("                      STATUS RESERVOIR: "+this.reservoir);
-        System.out.println("DISTANCE PARCOURUE SUR CETTE AUTOROUTE: "+this.getDistanceParcourueSurUneAutoroute()+"\n");
+        System.out.println("  POSITION VOITURE SUR CETTE AUTOROUTE: "+this.dfVoiture.format(this.getPositionVoiture())+"\n");
     }
 
-    public String VoiePlusProche(Double position, Autoroute a1, Autoroute a2 ){
-       String tmp1=this.idVoiedEntree;
-       Integer n;
-       Double distanceParcourue=this.distanceParcourueSurCetteAutoroute;
-       ArrayList<Voie> listVoie=a1.getListVoieDelAutoroute();
-       for (int i =0; i<listVoie.size(); i++){
-           if(listVoie.get(i).getIdVoie().equals(tmp1)){
-               distanceParcourue+=listVoie.get(i).getPositionVoie();
-           }
-       }
-
-
-
-
-
-
-       return null;
-    }
 }
