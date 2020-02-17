@@ -1,9 +1,9 @@
 package voitures;
 
-import autoroutes.Autoroute;
+import routes.Autoroute;
 import java.text.DecimalFormat;
 
-public class Voiture {
+public final class Voiture {
 
     private Integer idVoiture;
     private Double vitesse;
@@ -29,89 +29,79 @@ public class Voiture {
            this.idVoiedEntree=autoroute.getListVoieDelAutoroute().get(this.numVoieEntreeAutoroute-1).getIdVoie();
     }
 
-    public String getIdVoiedEntree(){
+
+    private final String  getIdVoiedEntree(){
        return this.idVoiedEntree;
     }
-
-    public Double getPositionVoieEntree(){
+    public    final Double getPositionVoieEntree(){
        return this.positionVoieEntree;
     }
-
-
-
-    public void setNumVoieEntreeAutoroute(Integer numVoie){
+    public  final void setNumVoieEntreeAutoroute(Integer numVoie){
        this.numVoieEntreeAutoroute=numVoie;
     }
-
-
-
-    public Integer getIdVoiture() {
+    public  final Integer getIdVoiture() {
         return idVoiture;
     }
-
-    public Double getVitesse() {
+    public  final Double getVitesse() {
         return vitesse;
     }
-
-    public Double getPositionVoiture() {
+    public final void setReservoir(){this.reservoir=this.reservoir-this.getConsommation();}
+    public final Integer getReservoir(){return this.reservoir;}
+    public  final Double getPositionVoiture() {
         return positionVoiture;
     }
 
-    public void arreterVoiturePourCarburant(){
+    //methode qui modifie la position de la voiture à chaque tour si elle n'a pas changé d'autoroute
+    public  final void setPositionVoiture(){
+        this.positionVoiture+=this.getVitesse();
+    }
+
+    //methode qui modifie la position de la voiture si elle change d'autoroute
+    public  final void setPositionVoiture(Double positionVoieEntree){
+        this.positionVoiture=positionVoieEntree;
+    }
+
+    //methode qui modifie la vitesse de la voiture à chaque changement d'autoroute
+    public  final void setVitesse(Double indiceDefrottement){
+        this.vitesse=this.vitesse*indiceDefrottement;
+    }
+
+    public  final Integer getConsommation() { return consommation; }
+
+    //methode qui qui arrete la voiture en cas de panne de carburant
+    public  final void arreterVoiturePourCarburant(){
        this.reservoir=0;
        this.vitesse=0.0;
     }
 
-    public void arreterVoiturePourAccident(){
+    //methode qui arrete la voiture en cas de'accident
+    public  final void arreterVoiturePourAccident(){
         this.vitesse=0.0;
     }
-    public void setPositionVoiture(){
-        this.positionVoiture+=this.getVitesse();
-    }
 
-    public void setPositionVoiture(Double positionVoieEntree){
-       this.positionVoiture=positionVoieEntree;
-    }
-    public void setVitesse(Double indiceDefrottement){
-       this.vitesse=this.vitesse*indiceDefrottement;
-    }
+    //methode qui determine si la voiture doit changer d'autoroute à la prochaine voie d'accès
+    // c'est à dire si la elle est devant et elle roule très lentement par rapport à la voiture qui est derrière elle
+    public  final Boolean doitChangerAutoroute(Voiture voiture){
 
-
-
-    public Integer getReservoir() {
-        return reservoir;
-    }
-
-    public void setReservoir() {
-        this.reservoir =this.reservoir-this.getConsommation();
-    }
-
-    private void setAutoroute(Autoroute autoroute){
-        this.autoroute=autoroute;
-    }
-
-    public Integer getConsommation() {
-        return consommation;
-    }
-
-
-
-
-
-    public Boolean doitChangerAutoroute(Voiture voiture){
-
-        if((this.positionVoiture >=voiture.positionVoiture) && this.positionVoiture+this.getVitesse()<=voiture.positionVoiture+voiture.getVitesse()){
-            return true;
+        try{
+            if((this.positionVoiture >=voiture.positionVoiture) && this.positionVoiture+this.getVitesse()<=voiture.positionVoiture+voiture.getVitesse()){
+                return true;
+            }
+            return false;
+        }catch (SecurityException e){
+            e.getMessage();
+            return false;
         }
-        return false;
     }
 
-    public void infosVoitures(){
-        System.out.println("----------------------VOITURE:  "+this.getIdVoiture()+"----------------------");
-        System.out.println("                          VOIE D'ACCES: "+this.getIdVoiedEntree());
-        System.out.println("                               VITESSE: "+this.getVitesse());
-        System.out.println("                      STATUS RESERVOIR: "+this.reservoir);
-        System.out.println("  POSITION VOITURE SUR CETTE AUTOROUTE: "+this.dfVoiture.format(this.getPositionVoiture())+"\n");
+
+    //Methode qui affiche les infos d'une voiture
+    public  final void infosVoitures(){
+            System.out.println("----------------------VOITURE:  "+this.getIdVoiture()+"----------------------");
+            System.out.println("                          VOIE D'ACCES: "+this.getIdVoiedEntree());
+            System.out.println("                               VITESSE: "+this.getVitesse());
+            System.out.println("                      STATUS RESERVOIR: "+this.reservoir);
+            System.out.println("  POSITION VOITURE SUR CETTE AUTOROUTE: "+this.dfVoiture.format(this.getPositionVoiture())+"\n");
     }
 
 }

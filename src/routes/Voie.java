@@ -1,6 +1,6 @@
-package autoroutes;
+package routes;
 
-public class Voie {
+ public final class Voie {
     private String idVoie;
     private Autoroute autoroute;
     private Double positionVoie;
@@ -12,15 +12,16 @@ public class Voie {
         this.positionVoie=positionVoie*(numVoie-1);
     }
 
-    public String getIdVoie() {
+    public final String getIdVoie() {
         return idVoie;
     }
 
-    public Double getPositionVoie() {
+    public     final Double getPositionVoie() {
         return positionVoie;
     }
 
-    public String infosVoie(){
+    //Méthode fournis les infos d'une voie
+    private   final String infosVoie(){
         String infos="La voie d'accès: "+this.idVoie+" se trouve sur l'autoroute: "+autoroute.getIdAutoroute()+" et à: "+this.positionVoie+" Km de l'entrée principale";
         return infos;
 
