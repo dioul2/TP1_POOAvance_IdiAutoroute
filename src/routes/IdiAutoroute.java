@@ -9,7 +9,7 @@ public final class IdiAutoroute {
 
     private String nomIdiAutoroute;
     private Integer nombreAutorouteSurIdiAutoroute;
-    private ArrayList<Autoroute> listAutoroute = new ArrayList<>();
+    private ArrayList<Autoroute> listAutoroute = new ArrayList<Autoroute>();
 
 
     public IdiAutoroute(String nomIdiAutoroute, Integer nombreAutorouteSurIdiAutoroute) {
